@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakePythonSetting">
+    <option name="pythonIntegrationState" value="YES" />
+  </component>
+  <component name="CMakeWorkspace" PROJECT_DIR="$PROJECT_DIR$/Cartesian_positioner/Cartesian_positioner/mechatronica-cartesian_positioner-5f05afad93c4/src/cartesian_positioner_controller">
+    <contentRoot DIR="$PROJECT_DIR$" />
+  </component>
+</project>

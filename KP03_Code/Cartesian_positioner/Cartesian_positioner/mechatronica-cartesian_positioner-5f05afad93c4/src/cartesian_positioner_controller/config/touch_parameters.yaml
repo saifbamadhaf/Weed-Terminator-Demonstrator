@@ -1,0 +1,9 @@
+
+seconds_moving: 0.1 #<-- define the desired time to move tool down seconds as a floating point number
+seconds_at_weed: 1.0 #<-- define the desired weed touching time in seconds as a floating point number
+
+use_measured_z: false #<-- define whether the measured z position should be used (if true, z_position_ground setting will be ignored)
+z_position_ground: -0.16 #<--define the z position for measurements
+
+cone_height: 0.09 #<-- define the height in meters of the conical crop model
+cone_radius: 0.07 #<-- define the radius in meters of the conical crop model

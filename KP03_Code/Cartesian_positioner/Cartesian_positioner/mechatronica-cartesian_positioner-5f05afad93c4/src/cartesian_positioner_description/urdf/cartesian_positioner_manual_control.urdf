@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->   
+<robot
+  name="cartesian_positioner">
+  <link name="root_link"/>
+
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.545 0.21 0.015"
+        rpy="0 0 0" />
+      <mass
+        value="2.61" />
+      <inertia
+        ixx="0.08194635"
+        ixy="5.20738915312999E-17"
+        ixz="2.57356843807431E-19"
+        iyy="0.3765219"
+        iyz="-1.969633946682E-18"
+        izz="0.45807675" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://cartesian_positioner_description/meshes/base_link.STL" scale="0.874 1.549 2.666"/>
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.627450980392157 0.627450980392157 0.627450980392157 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://cartesian_positioner_description/meshes/base_link.STL" scale="0.874 1.549 2.666" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="root_joint"
+    type="fixed">
+    <origin
+      xyz="0 0 0.25"
+      rpy="0 0 0" />
+    <parent
+      link="root_link" />
+    <child
+      link="base_link" />
+  </joint>
+  <link
+    name="x_stage">
+    <inertial>
+      <origin
+        xyz="0.0500000000000001 0.21 -0.015"
+        rpy="0 0 0" />
+      <mass
+        value="0.828000000000002" />
+      <inertia
+        ixx="0.0139185"
+        ixy="7.55023665839396E-19"
+        ixz="5.64688631502863E-21"
+        iyy="0.0010545"
+        iyz="-1.159596928051E-19"
+        izz="0.0148488" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://cartesian_positioner_description/meshes/x_stage.STL" scale="1 1.306 1.333"/>
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.627450980392157 0.627450980392157 0.627450980392157 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://cartesian_positioner_description/meshes/x_stage.STL" scale="1 1.306 1.333"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="x_joint_plan"
+    type="prismatic">
+    <origin
+      xyz="0.03 0.05 0.06"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="x_stage" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="0"
+      upper="0.750"
+      effort="100"
+      velocity="1" />
+  </joint>
+  
+  <link
+    name="y_stage">
+    <inertial>
+      <origin
+        xyz="0.02 0.02 -0.015"
+        rpy="0 0 0" />
+      <mass
+        value="0.021" />
+      <inertia
+        ixx="5.95000000000001E-06"
+        ixy="-6.66644293297972E-22"
+        ixz="-2.48154183766091E-24"
+        iyy="5.95000000000001E-06"
+        iyz="-7.76446868316441E-22"
+        izz="8.75000000000002E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://cartesian_positioner_description/meshes/y_stage.STL" scale="1 2.5 2.833"/>
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.627450980392157 0.627450980392157 0.627450980392157 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://cartesian_positioner_description/meshes/y_stage.STL" scale="1 2.5 2.833"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="y_joint"
+    type="prismatic">
+    <origin
+      xyz="0.03 0.04 0.02"
+      rpy="0 0 0" />
+    <parent
+      link="x_stage" />
+    <child
+      link="y_stage" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="0"
+      upper="0.36"
+      effort="100"
+      velocity="1" />
+  </joint>
+  <link
+    name="z_stage">
+    <inertial>
+      <origin
+        xyz="0.015 0.015 0.165"
+        rpy="0 0 0" />
+      <mass
+        value="0.297" />
+      <inertia
+        ixx="0.00271755"
+        ixy="2.53323837601238E-22"
+        ixz="-8.81620763116716E-36"
+        iyy="0.00271755"
+        iyz="1.35525271560688E-20"
+        izz="4.45500000000001E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://cartesian_positioner_description/meshes/z_stage.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.627450980392157 0.627450980392157 0.627450980392157 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://cartesian_positioner_description/meshes/z_stage.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="z_joint"
+    type="prismatic">
+    <origin
+      xyz="0.005 0.035 -0.12"
+      rpy="0 0 0" />
+    <parent
+      link="y_stage" />
+    <child
+      link="z_stage" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="0"
+      upper="0.255"
+      effort="100"
+      velocity="1" />
+  </joint>
+  <link
+    name="a_stage">
+    <inertial>
+      <origin
+        xyz="5.55111512312578E-17 -1.38777878078145E-17 0.005"
+        rpy="0 0 0" />
+      <mass
+        value="0.00706858347057704" />
+      <inertia
+        ixx="4.56512682474767E-07"
+        ixy="-8.7672286998829E-38"
+        ixz="7.62082778666612E-39"
+        iyy="4.56512682474767E-07"
+        iyz="1.26517267465749E-24"
+        izz="7.95215640439917E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://cartesian_positioner_description/meshes/a_stage.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.627450980392157 0.627450980392157 0.627450980392157 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://cartesian_positioner_description/meshes/a_stage.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="a_joint"
+    type="continuous">
+    <origin
+      xyz="0.0149999999999996 0.015 -0.0100000000000001"
+      rpy="0 0 0" />
+    <parent
+      link="z_stage" />
+    <child
+      link="a_stage" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      effort="100"
+      velocity="10" />
+  </joint>
+  <link
+    name="tool">
+    <inertial>
+      <origin
+        xyz="-1.52193926405975E-07 0.0530606506441713 0.0623032894021041"
+        rpy="0 0 0" />
+      <mass
+        value="0.147757758583212" />
+      <inertia
+        ixx="0.00034328202256601"
+        ixy="-1.09719380453623E-09"
+        ixz="-9.14516377462814E-10"
+        iyy="0.000183483007523239"
+        iyz="-0.000160724714580781"
+        izz="0.000181664808320788" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="-0.015 -0.009 -0.004"
+        rpy="1.57 0 1.57" />
+      <geometry>
+        <mesh
+          filename="package://cartesian_positioner_description/meshes/tool.STL" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.627450980392157 0.627450980392157 0.627450980392157 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="-0.015 -0.009 -0.004"
+        rpy="1.57 0 1.57" />
+      <geometry>
+        <mesh
+          filename="package://cartesian_positioner_description/meshes/tool.STL" scale="0.001 0.001 0.001" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="tool_joint"
+    type="fixed">
+    <origin
+      xyz="0 -0.12 -0.105"
+      rpy="0 0 0" />
+    <parent
+      link="a_stage" />
+    <child
+      link="tool" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+  <ros2_control name="TBot_positioner" type="system">
+    <hardware>
+      <plugin>odrive_hardware_interface/ODriveHardwareInterface</plugin>
+    </hardware>
+    <sensor name="odrv0">
+      <param name="serial_number">207f34a25748</param>
+    </sensor>
+
+    <joint name="y_joint">
+      <param name="serial_number">207f34a25748</param>
+      <param name="axis">0</param>
+      <param name="enable_watchdog">0</param>
+      <param name="watchdog_timeout">0.1</param>
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>|
+    </joint>
+
+    <joint name="z_joint">
+      <param name="serial_number">207f34a25748</param>
+      <param name="axis">1</param>
+      <param name="enable_watchdog">0</param>
+      <param name="watchdog_timeout">0.1</param>
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>|
+    </joint>
+
+    <transmission name="transmission1">
+      <plugin>TBotTransmission</plugin>
+      <actuator name="motor1" role="actuator1"/>
+      <joint name="y_joint" role="joint1">
+        <offset>0.0</offset>
+        <mechanical_reduction>80.0</mechanical_reduction>
+      </joint>
+      <actuator name="motor2" role="actuator2"/>
+      <joint name="z_joint" role="joint2">
+        <offset>0.0</offset>
+        <mechanical_reduction>80.0</mechanical_reduction>
+      </joint>
+    </transmission>
+  </ros2_control>
+
+  <!-- <ros2_control name="x_virtual" type="system">
+    <hardware>
+      <plugin>fake_components/GenericSystem</plugin>
+    </hardware>
+    <joint name="x_joint_plan">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+  </ros2_control> -->
+
+  <ros2_control name="xa_positioner" type="system">
+    <hardware>
+      <plugin>odrive_hardware_interface/ODriveHardwareInterface</plugin>
+    </hardware>
+    <sensor name="odrv1">
+      <param name="serial_number">364C38623030</param>
+    </sensor>
+    
+    <joint name="x_joint_plan">
+      <param name="serial_number">364C38623030</param>
+      <param name="axis">0</param>
+      <param name="enable_watchdog">0</param>
+      <param name="watchdog_timeout">0.1</param>
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    
+    <joint name="a_joint">
+      <param name="serial_number">364C38623030</param>
+      <param name="axis">1</param>
+      <param name="enable_watchdog">0</param>
+      <param name="watchdog_timeout">0.1</param>
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    
+    <transmission name="transmission2">
+        <plugin>transmission_interface/SimpleTransmission</plugin>
+        <joint name="x_joint_plan" role="x_joint_plan">
+    	    <mechanical_reduction>-160</mechanical_reduction>
+    	</joint>
+    </transmission>
+
+
+
+  </ros2_control>
+</robot>

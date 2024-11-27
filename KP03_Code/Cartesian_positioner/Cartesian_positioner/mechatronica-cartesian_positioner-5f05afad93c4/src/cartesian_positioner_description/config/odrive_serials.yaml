@@ -1,0 +1,8 @@
+configurations:
+  conveyor_weeder:
+    serial_xa: 364C38623030
+    serial_yz: 207F34A25748
+  mobile_weeder:
+    serial_xa: '366338643030'
+    serial_yz: 207D37815753
+last: mobile_weeder

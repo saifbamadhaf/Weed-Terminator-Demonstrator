@@ -1,0 +1,13 @@
+{
+"version": "0.2.0",
+"configurations": [
+    {
+        "name": "PositionerController",
+        "request": "launch",
+        "type": "cppdbg",
+        "miDebuggerServerAddress": "localhost:3000",
+        "cwd": "/",
+        "program": "/home/ard/onkruidvrij/cartesian_positioner/install/cartesian_positioner_controller/lib/cartesian_positioner_controller/positioner_controller",
+    }
+    ]
+}

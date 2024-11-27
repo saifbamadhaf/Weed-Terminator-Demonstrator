@@ -1,0 +1,12 @@
+controller_names:
+  - manipulator_joint_trajectory_controller
+
+manipulator_joint_trajectory_controller:
+  action_ns: follow_joint_trajectory
+  type: FollowJointTrajectory
+  default: true
+  joints:
+    - x_joint_plan
+    - y_joint
+    - z_joint
+    - a_joint
