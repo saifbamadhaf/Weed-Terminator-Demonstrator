@@ -1,6 +1,6 @@
 import os
 import sys
-import subprocess  # Import subprocess module
+import subprocess
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QPushButton, QLabel,
                              QVBoxLayout, QWidget, QMessageBox, QGraphicsOpacityEffect, QHBoxLayout)
 from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation, QAbstractAnimation
@@ -22,7 +22,7 @@ class MainWindow(QMainWindow):
         # Main layout
         self.layout = QVBoxLayout()
         self.layout.setSpacing(20)  # Space between widgets
-        self.layout.setAlignment(Qt.AlignCenter)  # Center alignment
+        self.layout.setAlignment(Qt.AlignCenter)
 
         # Welcome label
         self.welcome_label = QLabel('Welcome to the Weed Control System')
@@ -35,27 +35,27 @@ class MainWindow(QMainWindow):
         self.check_label.setFont(QFont('Arial', 36))
         self.check_label.setAlignment(Qt.AlignCenter)
         self.check_label.setStyleSheet("color: #2E4053;")
-        self.check_label.setVisible(False)  # Hidden initially
+        self.check_label.setVisible(False)  # Hidden at the beginning
 
         # Choose mode
         self.select_label = QLabel('Select your preferred mode to start:')
         self.select_label.setFont(QFont('Arial', 20))
         self.select_label.setAlignment(Qt.AlignCenter)
         self.select_label.setStyleSheet("color: #2E4053;")
-        self.select_label.setVisible(False)  # Hidden initially
+        self.select_label.setVisible(False)
 
         # Mode buttons
         self.auto_mode_button = QPushButton('Automatic Mode (Infinite Termination)')
         self.auto_mode_button.setFont(QFont('Arial', 20))
         self.auto_mode_button.clicked.connect(self.start_auto_mode)
         self.auto_mode_button.setEnabled(False)  # Disabled until system check is done
-        self.auto_mode_button.setFixedSize(600, 100)  # Adjust size
+        self.auto_mode_button.setFixedSize(600, 100)
 
         self.manual_mode_button = QPushButton('Manual Control Mode')
         self.manual_mode_button.setFont(QFont('Arial', 20))
         self.manual_mode_button.clicked.connect(self.start_manual_mode)
         self.manual_mode_button.setEnabled(False)  # Disabled until system check is done
-        self.manual_mode_button.setFixedSize(600, 100)  # Adjust size
+        self.manual_mode_button.setFixedSize(600, 100)
 
         # Help buttons
         self.auto_help_button = QPushButton('Help')
@@ -82,7 +82,7 @@ class MainWindow(QMainWindow):
         self.exit_button.setStyleSheet("background-color: #E74C3C; color: white; border-radius: 10px;")
         self.exit_button.clicked.connect(self.close_application)
 
-        # Add widgets to layout
+
         self.layout.addWidget(self.welcome_label)
         self.setCentralWidget(QWidget())
         self.centralWidget().setLayout(self.layout)
@@ -123,7 +123,7 @@ class MainWindow(QMainWindow):
     def start_gui_flow(self):
         # Fade out welcome label
         self.welcome_label.setGraphicsEffect(self.create_fade_effect(1.0, 0.0, 2000))  # Fade out over 2 seconds
-        QTimer.singleShot(0, self.perform_system_check)  # Perform system check after 2 seconds
+        QTimer.singleShot(0, self.perform_system_check)
 
     def perform_system_check(self):
         self.check_label.setVisible(True)
@@ -144,10 +144,10 @@ class MainWindow(QMainWindow):
         except Exception as e:
             QMessageBox.critical(self, 'Error', f'An exception occurred: {str(e)}')
 
-        # Update text after 2 seconds
+        # Update text after 5 seconds
         QTimer.singleShot(5000, lambda: self.check_label.setText('Finalizing system check... \n Please wait...'))
 
-        # Show options after 4 seconds
+        # Show options after 6 seconds
         QTimer.singleShot(6000, self.show_options)
 
     def show_options(self):
@@ -166,13 +166,13 @@ class MainWindow(QMainWindow):
         # Add a spacer to push the mode buttons down
         self.layout.addStretch()
 
-        # Create a layout for the mode buttons
+
         button_layout = QVBoxLayout()
         button_layout.setAlignment(Qt.AlignCenter)
 
         # Show select label
         self.select_label.setVisible(True)  # Make the label visible
-        self.layout.addWidget(self.select_label)  # Add it to the layout
+        self.layout.addWidget(self.select_label)
 
         # Add automatic mode button with help
         auto_layout = QHBoxLayout()
@@ -189,16 +189,16 @@ class MainWindow(QMainWindow):
         # Add the button layout to the main layout
         self.layout.addLayout(button_layout)
 
-        # Add another spacer to push the exit/help buttons down to the bottom
+
         self.layout.addStretch()
 
         # Create a layout for the exit and help buttons
         exit_layout = QHBoxLayout()
-        exit_layout.addStretch()  # This will push the buttons to the right
+        exit_layout.addStretch()
         exit_layout.addWidget(self.general_help_button)
         exit_layout.addWidget(self.exit_button)
 
-        # Add the exit layout to the main layout
+
         self.layout.addLayout(exit_layout)
 
     def create_fade_effect(self, start_opacity, end_opacity, duration):
@@ -223,7 +223,7 @@ class MainWindow(QMainWindow):
             self.launch_process = subprocess.Popen(['bash', '-c', launch_command], stdout=subprocess.PIPE,
                                                    stderr=subprocess.PIPE)
 
-            # Inform user about the simulation running
+
             QMessageBox.information(self, 'Success', 'The simulation is now running in the background.')
 
         except Exception as e:
