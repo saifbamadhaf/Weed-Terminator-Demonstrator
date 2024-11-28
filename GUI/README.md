@@ -12,7 +12,7 @@ the GUI integrates a camera view to enhance user control.
 
 ![Concept Demonstrator](./Images/demonstrator.png)
 
-## Why Python and PyQt for ROS
+## Why Python and PyQt for the GUI
 
 I chose **Python** and **PyQt** for the **Weed Terminator Demonstrator** project for the following reasons:
 
@@ -20,7 +20,9 @@ I chose **Python** and **PyQt** for the **Weed Terminator Demonstrator** project
   
 - **ROS Integration (Python):** Python is widely used in ROS, providing easy integration with ROS.
 
-- **GUI Development (PyQt):** **PyQt** has a designer called **QtDesigner**, which is great for visuals.
+- **GUI Development (PyQt):** **PyQt** has a designer called **QtDesigner**, which is great for visualization.
+
+- **Personal Development:** Python will be a great learning experience as I have little experience with it.
 
 
 This combination ensured a powerful and user-friendly system for demonstrating autonomous weed termination.
@@ -46,4 +48,10 @@ Additionally, there is a second option *Manual Mode* where the user can use a du
 the weed manually. There will be an option to race the machine with replay button which will make the system race the user after the user is done.
 There will be a Zed 2 camera for view to assist the user. Performance metrics (Speed and position of the demonstrator) will be shown for both modes.
 
-![](./Images/MainWindow.png)
+## First GUI Design
+
+
+![Welcome Screen](./Images/MainWindow.png)
+
+As seen above, this is the welcome screen for the GUI. There are a couple of buttons two of which are the manual and automatic
+modes for control.
