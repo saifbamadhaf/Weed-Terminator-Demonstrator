@@ -6,8 +6,7 @@ from PyQt5.QtGui import QImage, QPixmap, QFont
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QPushButton, QLabel,
                              QVBoxLayout, QWidget, QMessageBox, QGraphicsOpacityEffect, QHBoxLayout, QMenuBar, QMenu,
                              QAction, QSizePolicy)
-import os
-import subprocess
+
 
 from camera_view import CameraView
 

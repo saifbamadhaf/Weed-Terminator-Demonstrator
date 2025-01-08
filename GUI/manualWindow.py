@@ -12,7 +12,7 @@ import subprocess
 from camera_view import CameraView
 
 # Define the workspace directory
-workspace_dir = '/home/saifbamadhaf/ros2_ws'
+workspace_dir = ''
 
 
 class ManualWindow(QMainWindow):

@@ -24,8 +24,8 @@ class MainWindow(QMainWindow):
         self.setWindowTitle('Weed Control System')
 
 
-        # Assuming you are using a QMainWindow or QWidget
-        self.showFullScreen()  # This is the correct place to call showMaximized()
+
+        self.showFullScreen()
 
         QToolTip.setFont(QFont('Arial', 12))
 
