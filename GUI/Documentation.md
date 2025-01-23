@@ -36,8 +36,7 @@
 
 6. [Manual Mode Window](#manual-mode-window)  
     - [Code Functions](#code-functions-1)  
-      - [Launching The Manual Files](#launching-the-manual-mode-files) 
-      - [Show Controls](#show-controls)
+      - [Launching The Manual Files](#launching-the-manual-mode-files)
 
 7. [Autonomous Mode Window](#autonomous-mode-window)  
     - [Code Functions](#code-functions-2)  
@@ -51,7 +50,8 @@
     - [Code Functions](#code-functions-4)  
       - [Playing Video](#playing-video)
 
-10. [Extending & Fix the System](#10-extending--fix-the-system)  
+10. [Extending & Fix the System](#10-extending--fix-the-system) 
+11. [References](#11-references)
 
 
 # 1. Introduction
@@ -597,34 +597,6 @@ which is the gui and freezes it. This ensures the gui runs with no interference 
 
 **Note: Change the Workspace directory to your workspace.**
 
-### Show Controls
-
-```python
-    def show_controls(self):
-        dialog = QDialog(self)
-        dialog.setWindowTitle('Controls')
-        dialog.setFixedSize(1500, 1000)
-
-        image_label = QLabel(dialog)
-        pixmap = QPixmap('Images/Controls.png')
-        if pixmap.isNull():
-            QMessageBox.warning(self, 'Error', 'Failed to load the image.')
-            return
-
-        image_label.setPixmap(pixmap)
-        image_label.setScaledContents(True)
-        image_label.setFixedSize(dialog.size())
-
-
-        layout = QVBoxLayout(dialog)
-        layout.addWidget(image_label)
-
-        dialog.exec_()
-```
-
-
-
-- This function is used to open an image of the controls of how you can use the dual shock controller.
 ---
 
 # 7. Autonomous Mode Window
@@ -829,3 +801,12 @@ Improve the design of the camera, manual, and autonomous mode windows for a more
 **8. Fix Camera:**
 
 Fix the camera where it stops working when changing windows.
+
+# 11. References
+
+
+
+1. [How to Access Cameras using OpenCV with Python - e-con Systems](https://www.e-consystems.com/blog/camera/technology/how-to-access-cameras-using-opencv-with-python/)
+2. [Python - Play a Video using OpenCV - GeeksforGeeks](https://www.geeksforgeeks.org/python-play-a-video-using-opencv/)
+
+---
