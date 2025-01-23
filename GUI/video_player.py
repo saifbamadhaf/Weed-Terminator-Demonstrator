@@ -9,7 +9,7 @@ class VideoPlayer(QMainWindow):
         super().__init__()
 
         # Set up the main window
-        self.setWindowTitle("Video Player with Stop Button")
+        self.setWindowTitle("Video Player")
         self.setGeometry(100, 100, 800, 600)
 
         # Set up the central widget and layout
@@ -23,13 +23,11 @@ class VideoPlayer(QMainWindow):
         self.layout.addWidget(self.video_label)
 
 
-
-        # Video capture and timer
         self.cap = cv2.VideoCapture("video.mp4")
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_frame)
 
-        # Start video playback
+        # Start video
         self.play_video()
 
     def play_video(self):

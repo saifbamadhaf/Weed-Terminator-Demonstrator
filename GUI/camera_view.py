@@ -7,22 +7,18 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QPushButton, QLabel,
                              QAction, QSizePolicy)
 
 
-# Define the workspace directory
-workspace_dir = '/home/saifbamadhaf/ros2_ws'
-
-
 class CameraView(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('Weed Control System')
         self.process = None
 
-        # Assuming you are using a QMainWindow or QWidget
-        self.showFullScreen()  # This is the correct place to call showMaximized()
+
+        self.showFullScreen()
 
         # Main layout
         self.layout = QVBoxLayout()
-        self.layout.setSpacing(20)  # Space between widgets
+        self.layout.setSpacing(20)
         self.layout.setAlignment(Qt.AlignCenter)
 
         # Welcome label
@@ -31,11 +27,6 @@ class CameraView(QMainWindow):
         self.welcome_label.setAlignment(Qt.AlignCenter)
         self.welcome_label.setStyleSheet("color: white; background-color: #3C3C3C;")
 
-        # Exit button
-        self.exit_buttons = QPushButton('Back ↩')
-        self.exit_buttons.setFixedSize(300, 150)
-        self.exit_buttons.setStyleSheet("background-color: black; color: white; border-radius: 10px;")
-        self.exit_buttons.clicked.connect(self.back)
 
         # QLabel to display the video feed
         self.video_label = QLabel("Camera Feed")
@@ -49,101 +40,100 @@ class CameraView(QMainWindow):
         self.setCentralWidget(QWidget())
         self.centralWidget().setLayout(self.layout)
 
-        # Initialize camera with higher resolution (e.g., 1920x1080 or 3840x2160)
-        self.cap = cv2.VideoCapture(0)  # Adjust index if necessary
+        self.cap = cv2.VideoCapture(0)
 
 
-        # Timer to update frames
+
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_frame)
-        self.timer.start(30)  # Update the frame every 30ms
+        self.timer.start(30)
 
 
-        self.show_option()
+        self.start_layout()
 
         # Add Menu Bar
         self.create_menu_bars()
 
         # Styling
         self.setStyleSheet("""
-                          QWidget {
-                        background-color: #5e5e5e;
-                    }
+                       QWidget {
+                     background-color: #5e5e5e;
+                 }
 
-                    QLabel {
-                        color: white;
-                        padding: 30px;
-                        font-weight: bold;           /* Bold text */
-                        padding: 10px;               /* Padding around the text */
-                        border-radius: 10px;         /* Rounded corners for the background */
-                    }
+                 QLabel {
+                     color: white;
+                     padding: 30px;
+                     font-weight: bold;           /* Bold text */
+                     padding: 10px;               /* Padding around the text */
+                     border-radius: 10px;         /* Rounded corners for the background */
+                 }
 
-                    QPushButton {
-                        background-color: #3E3E3E; /* Dark gray background */
-                        color: #FFFFFF; /* White text */
-                        font-size: 18px;
-                        font-weight: bold;
-                        border: 2px solid #5A5A5A; /* Subtle border */
-                        border-radius: 10px; /* Rounded corners */
-                        padding: 10px 20px; /* Spacing inside the button */
-                        transition: all 0.3s ease; /* Smooth hover effect */
-                    }
+                 QPushButton {
+                     background-color: #3E3E3E; /* Dark gray background */
+                     color: #FFFFFF; /* White text */
+                     font-size: 18px;
+                     font-weight: bold;
+                     border: 2px solid #5A5A5A; /* Subtle border */
+                     border-radius: 10px; /* Rounded corners */
+                     padding: 10px 20px; /* Spacing inside the button */
+                     transition: all 0.3s ease; /* Smooth hover effect */
+                 }
 
-                    QPushButton:hover {
-                        background-color: #5A5A5A; /* Slightly lighter on hover */
-                        border-color: #FFFFFF; /* Highlight border on hover */
-                        transform: scale(1.05); /* Slight zoom effect */
-                    }
+                 QPushButton:hover {
+                     background-color: #5A5A5A; /* Slightly lighter on hover */
+                     border-color: #FFFFFF; /* Highlight border on hover */
+                     transform: scale(1.05); /* Slight zoom effect */
+                 }
 
-                    QPushButton:pressed {
-                        background-color: #2B2B2B; /* Darker on press */
-                        border-color: #8A8A8A; /* Dimmed border */
-                        transform: scale(0.95); /* Slight shrink effect */
-                    }
+                 QPushButton:pressed {
+                     background-color: #2B2B2B; /* Darker on press */
+                     border-color: #8A8A8A; /* Dimmed border */
+                     transform: scale(0.95); /* Slight shrink effect */
+                 }
 
-                    QMenuBar {
-                        background-color: #3C3C3C; /* Dark gray for the menubar */
-                        color: #FFFFFF; /* White text for visibility */
-                        border: 1px solid #2D2D2D; /* Subtle border for contrast */
-                        font-size: 70px; /* Increase text size */
-                    }
+                 QMenuBar {
+                     background-color: #3C3C3C; /* Dark gray for the menubar */
+                     color: #FFFFFF; /* White text for visibility */
+                     border: 1px solid #2D2D2D; /* Subtle border for contrast */
+                     font-size: 70px; /* Increase text size */
+                 }
 
-                    QMenuBar::item {
-                        background-color: transparent; /* Transparent by default */
-                        color: #FFFFFF; /* White text for visibility */
-                        padding: 5px 10px; /* Spacing around menu items */
-                        margin: 2px; /* Small margins for items */
-                        font-size: 30px; /* Increase text size */
-                    }
+                 QMenuBar::item {
+                     background-color: transparent; /* Transparent by default */
+                     color: #FFFFFF; /* White text for visibility */
+                     padding: 5px 10px; /* Spacing around menu items */
+                     margin: 2px; /* Small margins for items */
+                     font-size: 30px; /* Increase text size */
+                 }
 
-                    QMenuBar::item:selected { 
-                        background-color: #5A5A5A; /* Highlight color when hovered */
-                        color: #E0E0E0; /* Slightly lighter text when hovered */
-                    }
+                 QMenuBar::item:selected {
+                     background-color: #5A5A5A; /* Highlight color when hovered */
+                     color: #E0E0E0; /* Slightly lighter text when hovered */
+                 }
 
 
-                    QMenuBar::item:pressed {
-                        background-color: #2D2D2D; /* Darker color for pressed items */
-                    }
+                 QMenuBar::item:pressed {
+                     background-color: #2D2D2D; /* Darker color for pressed items */
+                 }
 
-                    /* Ensure actions in menus have white text */
-                    QMenu::item {
-                       background-color: #3E3E3E; /* Dark gray background */
-                       color: #FFFFFF; /* White text for actions */
-                       padding: 5px 10px; /* Spacing around menu items */
-                       margin: 2px; /* Small margins for items */
-                       font-size: 30px; /* Increase text size */
-                    }
+                 /* Ensure actions in menus have white text */
+                 QMenu::item {
+                    background-color: #3E3E3E; /* Dark gray background */
+                    color: #FFFFFF; /* White text for actions */
+                    padding: 5px 10px; /* Spacing around menu items */
+                    margin: 2px; /* Small margins for items */
+                    font-size: 15px; /* Increase text size */
+                 }
 
-                    QMenu::item:selected {
-                       background-color: #5A5A5A; /* Highlight color when hovered */
-                       color: #E0E0E0; /* Lighter text when hovered */
-                    }
+                 QMenu::item:selected {
+                    background-color: #5A5A5A; /* Highlight color when hovered */
+                    color: #E0E0E0; /* Lighter text when hovered */
+                 }
 
-                    QMenu::item:pressed {
-                       background-color: #2D2D2D; /* Darker color for pressed items */
-                    }
-                """)
+                 QMenu::item:pressed {
+                    background-color: #2D2D2D; /* Darker color for pressed items */
+                 }
+             """)
 
     def create_menu_bars(self):
         # Create the menu bar
@@ -153,18 +143,18 @@ class CameraView(QMainWindow):
         home = menubar.addMenu('≡')
 
         menu_action = QAction('Main Menu', self)
-        homing_action = QAction('Homing', self)
-        homing_action.triggered.connect(self.show_homing)
+        menu_action.triggered.connect(self.open_Main_Menu)
 
-
-        menu_action.triggered.connect(self.show_Main_Menu)
+        exit = QAction('Exit', self)
+        exit.triggered.connect(self.close_application)
 
         # Add actions to menus
         home.addAction(menu_action)
+        home.addAction(exit)
 
-        home.addAction(homing_action)
 
-    def show_option(self):
+
+    def start_layout(self):
         self.welcome_label.setText('Weed Control System')
 
         # Create a layout for the welcome label
@@ -186,28 +176,13 @@ class CameraView(QMainWindow):
 
         self.layout.addStretch()
 
-        # Create a layout for the exit button
-        exit_layout = QHBoxLayout()
-        exit_layout.addStretch()
-        exit_layout.addWidget(self.exit_buttons)
 
-        self.layout.addLayout(exit_layout)
-
-    def back(self):
-        from GUI import MainWindow
-        self.window = MainWindow()  # Instantiate VideoPlayer
+    def open_Main_Menu(self):
+        from main_window import MainWindow
+        self.window = MainWindow()
         self.window.show()
         self.close()
 
-    def show_Main_Menu(self):
-        # Delay the import of MainWindow to avoid circular import
-        from GUI import MainWindow
-        self.window = MainWindow()  # Instantiate VideoPlayer
-        self.window.show()
-        self.close()
-
-    def show_homing(self):
-        QMessageBox.information(self, "Homing", "Homing action triggered!")
 
     def update_frame(self):
         ret, frame = self.cap.read()
@@ -241,6 +216,9 @@ class CameraView(QMainWindow):
         if self.cap.isOpened():
             self.cap.release()
         event.accept()
+
+    def close_application(self):
+        self.close()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

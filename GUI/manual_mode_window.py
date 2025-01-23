@@ -5,23 +5,23 @@ from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation, QAbstractAnimation
 from PyQt5.QtGui import QImage, QPixmap, QFont
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QPushButton, QLabel,
                              QVBoxLayout, QWidget, QMessageBox, QGraphicsOpacityEffect, QHBoxLayout, QMenuBar, QMenu,
-                             QAction, QSizePolicy)
-
+                             QAction, QSizePolicy, QDialog)
+import os
+import subprocess
 
 from camera_view import CameraView
-
-# Define the workspace directory
-workspace_dir = '/home/saifbamadhaf/ros2_ws'
+from threading import Thread
 
 
-class AutoWindow(QMainWindow):
+
+class ManualWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('Weed Control System')
         self.process = None
 
-        # Assuming you are using a QMainWindow or QWidget
-        self.showFullScreen()  # This is the correct place to call showMaximized()
+
+        self.showFullScreen()
 
         # Main layout
         self.layout = QVBoxLayout()
@@ -33,6 +33,13 @@ class AutoWindow(QMainWindow):
         self.welcome_label.setFont(QFont('Arial', 50, QFont.Bold))
         self.welcome_label.setAlignment(Qt.AlignCenter)
         self.welcome_label.setStyleSheet("color: white; background-color: #3C3C3C;")
+
+
+        self.controls_buttons = QPushButton('Controls 🎮')
+
+        self.controls_buttons.setFixedSize(300, 150)
+        self.controls_buttons.setStyleSheet("background-color: black; color: white; border-radius: 10px;")
+        self.controls_buttons.clicked.connect(self.show_controls)
 
         # QLabel to display the video feed
         self.video_label = QLabel("Camera Feed")
@@ -46,15 +53,15 @@ class AutoWindow(QMainWindow):
         self.setCentralWidget(QWidget())
         self.centralWidget().setLayout(self.layout)
 
-        # Initialize camera with higher resolution (e.g., 1920x1080 or 3840x2160)
-        self.cap = cv2.VideoCapture(0)  # Adjust index if necessary
 
-        # Timer to update frames
+        self.cap = cv2.VideoCapture(0)
+
+
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_frame)
         self.timer.start(30)  # Upd
 
-        self.show_option()
+        self.start_layout()
 
         # Add Menu Bar
         self.create_menu_bars()
@@ -111,7 +118,7 @@ class AutoWindow(QMainWindow):
                      font-size: 30px; /* Increase text size */
                  }
 
-                 QMenuBar::item:selected { 
+                 QMenuBar::item:selected {
                      background-color: #5A5A5A; /* Highlight color when hovered */
                      color: #E0E0E0; /* Slightly lighter text when hovered */
                  }
@@ -127,7 +134,7 @@ class AutoWindow(QMainWindow):
                     color: #FFFFFF; /* White text for actions */
                     padding: 5px 10px; /* Spacing around menu items */
                     margin: 2px; /* Small margins for items */
-                    font-size: 30px; /* Increase text size */
+                    font-size: 15px; /* Increase text size */
                  }
 
                  QMenu::item:selected {
@@ -149,29 +156,33 @@ class AutoWindow(QMainWindow):
         launch = menubar.addMenu('▶')
 
         menu_action = QAction('Main Menu', self)
-        menu_action.triggered.connect(self.show_Main_Menu)
+        menu_action.triggered.connect(self.open_Main_Menu)
 
-        launch_action = QAction('Launch files', self)
-        # menu_action.triggered.connect(self.show_homing)
+        launch_action = QAction('Start Manual Mode', self)
+        launch_action.triggered.connect(self.launch_files)
 
-        # Create 'Homing' action and connect to function
         homing_action = QAction('Homing', self)
-        homing_action.triggered.connect(self.show_homing)
+        homing_action.triggered.connect(self.homing)
 
         idle_action = QAction('Idle', self)
-        idle_action.triggered.connect(self.show_idle)
+        idle_action.triggered.connect(self.idle)
 
-        # Create 'Camera View' action and connect to function
+
         camera_action = QAction('Camera View', self)
-        camera_action.triggered.connect(self.show_camera_view)  # Correct way to connect
+        camera_action.triggered.connect(self.open_camera_view)
+
+        exit = QAction('Exit', self)
+        exit.triggered.connect(self.close_application)
 
         # Add actions to menus
         home.addAction(menu_action)
         home.addAction(camera_action)
         home.addAction(homing_action)
+        home.addAction(idle_action)
+        home.addAction(exit)
         launch.addAction(launch_action)
 
-    def show_option(self):
+    def start_layout(self):
         self.welcome_label.setText('Weed Control System')
 
         # Create a layout for the welcome label
@@ -185,66 +196,154 @@ class AutoWindow(QMainWindow):
         self.layout.addStretch()
 
         self.layout.addWidget(self.video_label)
-        self.layout.addStretch()
 
         button_layout = QVBoxLayout()
         button_layout.setAlignment(Qt.AlignCenter)
 
         self.layout.addStretch()
 
-    def show_Main_Menu(self):
-        # Delay the import of MainWindow to avoid circular import
-        from GUI import MainWindow
-        self.window = MainWindow()  # Instantiate VideoPlayer
+        # Create a layout for the exit button
+        exit_layout = QHBoxLayout()
+        exit_layout.addStretch()
+        exit_layout.addWidget(self.controls_buttons)
+
+        self.layout.addLayout(exit_layout)
+
+
+    def open_Main_Menu(self):
+        from main_window import MainWindow
+        self.window = MainWindow()
         self.window.show()
         self.close()
 
-    def show_homing(self):
-        # You can implement this function to show homing related actions
-        QMessageBox.information(self, "Homing", "Homing action triggered!")
-
-    def show_idle(self):
-        # Placeholder for homing calibration action
-        QMessageBox.information(self, 'Idle', 'Turning system idle...')
-        self.perform_system_check()
-
-    def show_camera_view(self):
-        # Placeholder function for camera view
-        self.cameraView = CameraView()  # Instantiate VideoPlayer
-        self.cameraView.show()  # Show the player window
+    def open_camera_view(self):
+        self.cameraView = CameraView()
+        self.cameraView.show()
         self.close()
+
+    def homing(self):
+
+        try:
+            # Change to the ROS 2 workspace directory
+            homimg_dir = ''
+            os.chdir(homimg_dir)
+
+            build_process = subprocess.run(['python3', 'homing_python.py'], capture_output=True, text=True)
+            QMessageBox.information(self, 'Homing', 'Homing calibration complete')
+
+            if build_process.returncode != 0:
+                QMessageBox.critical(self, 'Build Error', f'Build failed:\n{build_process.stderr}')
+                return
+
+        except Exception as e:
+            QMessageBox.critical(self, 'Error', f'An exception occurred: {str(e)}')
+
+    def idle(self):
+
+        try:
+            # Change to the ROS 2 workspace directory
+            idle_dir = ''
+            os.chdir(idle_dir)
+
+            build_process = subprocess.run(['python3', 'set_all_idle.py'], capture_output=True, text=True)
+            QMessageBox.information(self, 'Idle', 'Motor are now idle')
+
+            if build_process.returncode != 0:
+                QMessageBox.critical(self, 'Build Error', f'Build failed:\n{build_process.stderr}')
+                return
+
+        except Exception as e:
+            QMessageBox.critical(self, 'Error', f'An exception occurred: {str(e)}')
+
+
+    def launch_files(self):
+        try:
+            workspace = ''
+            # Change to the ROS 2 workspace directory
+            os.chdir(workspace)
+
+            def run_launch():
+                try:
+
+                    launch_command = ['ros2', 'launch', 'cartesian_positioner_controller', 'all_control.launch.py',
+                                      'setup_type:=mobile_weeder', 'manual:=true']
+
+                    self.process = subprocess.Popen(
+                        launch_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+                    )
+
+
+                    for line in self.process.stdout:
+                        print(line, end="")
+
+                except Exception as e:
+                    QMessageBox.critical(self, 'Error', f'An exception occurred: {str(e)}')
+
+            # Run the launch process in a separate thread
+            launch_thread = Thread(target=run_launch, daemon=True)
+            launch_thread.start()
+
+            QMessageBox.information(self, 'Launch Started', 'The ROS 2 launch process has started.')
+
+        except Exception as e:
+            QMessageBox.critical(self, 'Error', f'An exception occurred: {str(e)}')
+
 
     def update_frame(self):
         ret, frame = self.cap.read()
         if ret:
-            # Get the original frame size
+
             height, width, _ = frame.shape
 
             # Set higher resolution (optional)
             # self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
             # self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
 
-            # Resize using better interpolation
+
             left_frame = frame[:, :width // 2]  # Left half of the frame
 
-            # Convert to RGB format
+
             left_frame = cv2.cvtColor(left_frame, cv2.COLOR_BGR2RGB)
 
-            # Resize with INTER_CUBIC for better quality
+
             left_frame = cv2.resize(left_frame, (width * 1, height * 2), interpolation=cv2.INTER_CUBIC)
 
-            # Convert to QImage
+
             h, w, ch = left_frame.shape
             bytes_per_line = ch * w
             qimg = QImage(left_frame.data, w, h, bytes_per_line, QImage.Format_RGB888)
 
-            # Display in QLabel
             pixmap = QPixmap.fromImage(qimg)
             self.video_label.setPixmap(pixmap)
 
 
+    def show_controls(self):
+        dialog = QDialog(self)
+        dialog.setWindowTitle('Controls')
+        dialog.setFixedSize(1500, 1000)
+
+        image_label = QLabel(dialog)
+        pixmap = QPixmap('Images/Controls.png')
+        if pixmap.isNull():
+            QMessageBox.warning(self, 'Error', 'Failed to load the image.')
+            return
+
+        image_label.setPixmap(pixmap)
+        image_label.setScaledContents(True)
+        image_label.setFixedSize(dialog.size())
+
+
+        layout = QVBoxLayout(dialog)
+        layout.addWidget(image_label)
+
+        dialog.exec_()
+
+    def close_application(self):
+        self.close()
+
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    autoWindow = AutoWindow()
-    autoWindow.show()
+    manualWindow = ManualWindow()
+    manualWindow.show()
     sys.exit(app.exec_())
